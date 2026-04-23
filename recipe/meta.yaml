@@ -25,13 +25,14 @@ requirements:
     - isodate >=0.6.1
     - typing_extensions >=4.6.0
 
+# Unable to run tests: No azure-devtools -> https://pypi.org/project/azure-devtools
 test:
-imports:
-  - azure.appconfiguration
-  - azure.appconfiguration._generated
-commands:
+  imports:
+    - azure.appconfiguration
+    - azure.appconfiguration._generated
+  commands:
     - pip check
-requires:
+  requires:
     - pip
 
 about:
