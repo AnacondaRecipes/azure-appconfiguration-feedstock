@@ -1,46 +1,46 @@
-schema_version: 1
-
-context:
-  name: azure-appconfiguration
-  version: "1.8.0"
+{% set name = "azure-appconfiguration" %}
+{% set version = "1.7.2" %}
 
 package:
-  name: ${{ name|lower }}
-  version: ${{ version }}
+  name: {{ name }}
+  version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/${{ name | replace('-', '_') }}-${{ version }}.tar.gz
-  sha256: 168e7b01b350f5d806a2d935a8ec3694c59c6394d5a1c409eb05fef0b56b1aa0
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name | replace('-', '_') }}-{{ version }}.tar.gz
+  sha256: cefd75b298b898a8ed9f73048f3f39f4e81059a58cd832d0523787fc1d912a06
 
 build:
   number: 0
-  noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<38]
 
 requirements:
   host:
-    - setuptools
-    - python ${{ python_min }}.*
     - pip
+    - python
+    - setuptools
   run:
-    - python >=${{ python_min }}
+    - python
     - azure-core >=1.30.0
     - isodate >=0.6.1
     - typing_extensions >=4.6.0
-tests:
-  - python:
-      imports:
-        - azure.appconfiguration
-        - azure.appconfiguration._generated
-      pip_check: true
-      python_version: ${{ python_min }}.*
+
+test:
+imports:
+  - azure.appconfiguration
+  - azure.appconfiguration._generated
+commands:
+    - pip check
+requires:
+    - pip
 
 about:
-  summary: Microsoft App Configuration Data Library for Python
+  home: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/appconfiguration/azure-appconfiguration
+  summary: Microsoft App Configuration Data Client Library for Python
   license: MIT
   license_file: LICENSE
-  homepage: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/appconfiguration/azure-appconfiguration
-
-extra:
-  recipe-maintainers:
-    - janjagusch
+  license_family: MIT
+  description: |
+    Azure App Configuration is a managed service that helps developers centralize their application configurations simply and securely.
+  dev_url: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/appconfiguration/azure-appconfiguration
+  doc_url: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/appconfiguration/azure-appconfiguration/README.md
